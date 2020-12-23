@@ -1,0 +1,62 @@
+data <- read.csv(file.choose(), header=TRUE)   ##pheno model graphs.csv
+names(data)
+library(ggplot2)
+
+
+rect1 <- data.frame(lower = 1, 
+                    upper = 3)
+rect2 <- data.frame(lower = 1, 
+                    upper = 7) 
+rect3 <- data.frame(lower = 10, 
+                    upper = 11)
+rect4 <- data.frame(lower = 10, 
+                    upper = 14)
+rect5 <- data.frame(lower = 14, 
+                    upper = 16)
+
+ggplot() +   ##'group = 1' ensures all points are put into same group for geom_line
+  geom_line(data = data, aes(x = data$Days, y = data$Catch), size = 1 ) +
+  geom_rect( data = rect1, 
+             mapping = aes( xmin = lower , 
+                            xmax = upper ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = rect2, 
+             mapping = aes( xmin = lower , 
+                            xmax = upper ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#7B7F7F" ,
+             alpha = .3 ) +
+  geom_rect( data = rect3, 
+             mapping = aes( xmin = lower , 
+                            xmax = upper ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = rect4, 
+             mapping = aes( xmin = lower , 
+                            xmax = upper ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#7B7F7F" ,
+             alpha = .3 ) +
+  geom_rect( data = rect5, 
+             mapping = aes( xmin = lower , 
+                            xmax = upper ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line( colour = "white"), 
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+        axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "black"))
+
+
+
+
+xlim(as.Date(c('4/5/2015', '16/7/2015'), format="%d/%m/%Y"))
