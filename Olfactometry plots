@@ -1,0 +1,98 @@
+library("ggplot2")
+library("grid")
+
+myData <- read.csv(file.choose(), header=TRUE)     #Olfactometry data.csv
+
+
+##Methyl salicylate##
+
+myData$Treatment1 <- relevel(myData$Treatment1, "Methyl salicylate 10mg/ml")   #This changes the order in which treatments are plotted so that 10mg/ml goes at the bottom. You'll need to do this for each chemical
+
+Colours <- c("#454545", "#b8b8b8", "#454545", "#454545") ##set colours of bars
+
+ggplot(data = myData, aes(x=Rep1,y=Count1,order=Treatment1)) +                 #tells R what data you are plotting, change the number at the end of 'Rep', 'Treatment', and 'Count' each time to match the header in your excel sheet
+  geom_bar(aes(fill=Treatment1),stat="identity",position="identity", width=0.4, colour="black") +            #draw the bars, change the number at the end of 'Treatment' each time
+  scale_y_continuous(labels=abs, name="Number of weevils", limits=c(-115,70)) +          #change horizontal axis text and length (set limits to slightly bigger than your positive and negative 'count' values)
+  coord_flip() +                                                            # makes the barplot horizontal
+  geom_hline(yintercept = 0, color =c("black")) +                           #adds a vertical line
+  scale_fill_manual(values=Colours) +   
+  annotate("text", label = "Methyl salicylate 10mg/ml", x = 1, y = -90, size = 6, colour = "black") +    #change text & location of labels. 'x' equals the 'rep' number for that treatment, 'y' indicates position along hortizontal axis - change as needed
+  annotate("text", label = "Control", x = 1, y = 60, size = 6, colour = "black") +
+  annotate("text", label = "Methyl salicylate 100mg/ml", x = 2, y = -90, size = 6, colour = "black") +    #change text & location of labels
+  annotate("text", label = "Control", x = 2, y = 60, size = 6, colour = "black") +
+  annotate("text", label = "Methyl salicylate 500mg/ml ***", x = 3, y = -90, size = 6, colour = "black") +    #change text & location of labels
+  annotate("text", label = "Control", x = 3, y = 60, size = 6, colour = "black") +
+  theme(legend.position="none",                                              
+        axis.ticks = element_blank(), 
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_text(size=16),                                 
+        axis.text.x=element_text(size=13),                                  
+        legend.title=element_blank(),
+        legend.text=element_text(size=12),                                
+        panel.background = element_rect(fill = "white"),
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),  
+        axis.line.y = element_blank()
+  )
+
+
+
+##1-hexanol##
+
+myData$Treatment2 <- relevel(myData$Treatment2, "1-hexanol 10mg/ml")   #change the number at the end of 'Treatment each time, along with the compound name
+
+Colours <- c("#454545", "#454545", "#454545", "#b8b8b8") ##set colours of bars
+
+ggplot(data = myData, aes(x=Rep2,y=Count2,order=Treatment2)) + 
+  geom_bar(aes(fill=Treatment2),stat="identity",position="identity", width=0.4, colour="black") +
+  scale_y_continuous(labels=abs, name="Number of weevils", limits=c(-115,70)) +          #change horizontal axis text and length (set limits to slightly bigger than your positive and negative 'count' values)
+  coord_flip() +                                                            # makes the barplot horizontal
+  geom_hline(yintercept = 0, color =c("black")) +                           #adds a vertical line
+  scale_fill_manual(values=Colours) +   
+  annotate("text", label = "1-hexanol 10mg/ml ***", x = 1, y = -95, size = 6, colour = "black") +    #change text & location of labels. 'x' equals the 'rep' number for that treatment, 'y' indicates position along hortizontal axis - change as needed
+  annotate("text", label = "Control", x = 1, y = 60, size = 6, colour = "black") +
+  annotate("text", label = "1-hexanol 100mg/ml **", x = 2, y = -95, size = 6, colour = "black") +    #change text & location of labels
+  annotate("text", label = "Control", x = 2, y = 60, size = 6, colour = "black") +
+  annotate("text", label = "1-hexanol 500mg/ml", x = 3, y = -95, size = 6, colour = "black") +    #change text & location of labels
+  annotate("text", label = "Control", x = 3, y = 60, size = 6, colour = "black") +
+  theme(legend.position="none",                                              
+        axis.ticks = element_blank(), 
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_text(size=16),                                 
+        axis.text.x=element_text(size=13),                                  
+        legend.title=element_blank(),
+        legend.text=element_text(size=12),                                
+        panel.background = element_rect(fill = "white"),
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),  
+        axis.line.y = element_blank()
+  )
+
+
+##Methyl salicylate##
+
+myData$Treatment1 <- relevel(myData$Treatment1, "Methyl salicylate 10mg/ml")   #This changes the order in which treatments are plotted so that 10mg/ml goes at the bottom. You'll need to do this for each chemical
+
+Colours <- c("#454545", "#b8b8b8", "#454545", "#454545") ##set colours of bars
+
+ggplot(data = myData, aes(x=Rep1,y=Response1,order=Treatment1)) +                 #tells R what data you are plotting, change the number at the end of 'Rep', 'Treatment', and 'Count' each time to match the header in your excel sheet
+  geom_bar(stat="identity",position="identity", width=0.4, colour="black") +            #draw the bars, change the number at the end of 'Treatment' each time
+  scale_y_continuous(labels=abs, name="Number of weevils", limits=c(-175,0)) +          #change horizontal axis text and length (set limits to slightly bigger than your positive and negative 'count' values)
+  coord_flip() +                                                            # makes the barplot horizontal
+  geom_hline(yintercept = 0, color =c("black")) +                           #adds a vertical line
+  scale_fill_manual(values=Colours) +   
+  annotate("text", label = "Methyl salicylate 10mg/ml", x = 1, y = -140, size = 6, colour = "black") +    #change text & location of labels. 'x' equals the 'rep' number for that treatment, 'y' indicates position along hortizontal axis - change as needed
+  annotate("text", label = "Methyl salicylate 100mg/ml", x = 2, y = -140, size = 6, colour = "black") +    #change text & location of labels
+  annotate("text", label = "Methyl salicylate 500mg/ml", x = 3, y = -140, size = 6, colour = "black") +    #change text & location of labels
+  theme(legend.position="none",                                              
+        axis.ticks = element_blank(), 
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_text(size=16),                                 
+        axis.text.x=element_text(size=13),                                  
+        legend.title=element_blank(),
+        legend.text=element_text(size=12),                                
+        panel.background = element_rect(fill = "white"),
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),  
+        axis.line.y = element_blank()
+  )
