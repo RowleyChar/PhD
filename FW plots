@@ -1,0 +1,488 @@
+data <- read.csv(file.choose(),header=TRUE)  ## soil temps or rain & catch data
+names(data)
+library(ggplot2)
+
+ggplot(data = data,aes (x = as.Date(X, format = "%d/%m/%y"))) +
+	geom_line(aes(y = Man.15), colour = "red") +
+	geom_line(aes(y = Ken.15), colour = "red4") +
+	geom_line(aes(y = Ken.16), colour = "grey70") +
+	geom_line(aes(y = Man.16), colour = "grey50") +
+	geom_line(aes(y = Wilts.16), colour = "grey15") +
+	theme_bw() +
+      theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+
+
+
+
+##Ken15
+
+d1 <- data.frame(x=data$Days, y=data$Ken15)  #data
+d2 <- data.frame(x=data$Days, y=data$Ken15.1)
+d3 <- data.frame(x=data$Days, y=data$Ken15.2)
+
+d4 <- data.frame(x = 61, y = 80)  #rectangles
+d5 <- data.frame(x = 97, y = 105)
+d6 <- data.frame(x = 113, y = 120)
+
+d7 <- data.frame(x = 33, x2 = 59, y = 18, y2 = 18, panel = "b")  #lines
+d7.1 <- data.frame(x = 33, x2 = 33, y = 0, y2 = 18, panel = "b")
+d7.2 <- data.frame(x = 59, x2 = 59, y = 18, y2 = Inf, panel = "b")
+d7.3 <- data.frame(x = 59, x2 = 59, y = -Inf, y2 = 15, panel = "a")
+d8 <- data.frame(x = 79, x2 = 99, y = 13, y2 = 13, panel = "b")
+d8.1 <- data.frame(x = 79, x2 = 79, y = 0, y2 = 13, panel = "b")
+d8.2 <- data.frame(x = 99, x2 = 99, y = 13, y2 = Inf, panel = "b")
+d8.3 <- data.frame(x = 99, x2 = 99, y = -Inf, y2 = 15, panel = "a")
+d9 <- data.frame(x = 97, x2 = 114, y = 11, y2 = 11, panel = "b")
+d9.1 <- data.frame(x = 97, x2 = 97, y = 0, y2 = 11, panel = "b")
+d9.2 <- data.frame(x = 114, x2 = 114, y = 11, y2 = Inf, panel = "b")
+d9.3 <- data.frame(x = 114, x2 = 114, y = -Inf, y2 = 15, panel = "a")
+
+d10 <- data.frame(x = 42, x2 = 68, y = 17, y2 = 17, panel = "b") #other peaks
+d10.1 <- data.frame(x = 42, x2 = 42, y = 0, y2 = 17, panel = "b")
+d10.2 <- data.frame(x = 68, x2 = 68, y = 17, y2 = Inf, panel = "b")
+d11 <- data.frame(x = 56, x2 = 80, y = 16, y2 = 16, panel = "b")
+d11.1 <- data.frame(x = 56, x2 = 56, y = 0, y2 = 16, panel = "b")
+d11.2 <- data.frame(x = 80, x2 = 80, y = 16, y2 = Inf, panel = "b")
+d12 <- data.frame(x = 64, x2 = 86, y = 15, y2 = 15, panel = "b")
+d12.1 <- data.frame(x = 64, x2 = 64, y = 0, y2 = 15, panel = "b")
+d12.2 <- data.frame(x = 86, x2 = 86, y = 15, y2 = Inf, panel = "b")
+d13 <- data.frame(x = 75, x2 = 96, y = 14, y2 = 14, panel = "b")
+d13.1 <- data.frame(x = 75, x2 = 75, y = 0, y2 = 14, panel = "b")
+d13.2 <- data.frame(x = 96, x2 = 96, y = 14, y2 = Inf, panel = "b")
+d14 <- data.frame(x = 90, x2 = 108, y = 12, y2 = 12, panel = "b")
+d14.1 <- data.frame(x = 90, x2 = 90, y = 0, y2 = 12, panel = "b")
+d14.2 <- data.frame(x = 108, x2 = 108, y = 12, y2 = Inf, panel = "b")
+
+d1$panel <- "b"
+d2$panel <- "a"
+d3$panel <- "a"
+d4$panel <- "a"
+d5$panel <- "a"
+d6$panel <- "a"
+
+d <- rbind(d1, d2, d3, d4, d5, d6)
+
+p1 <- ggplot(data = d, mapping = aes(x = x, y = y)) + 
+  facet_grid(panel~., scale="free") + 
+  geom_line(data=d2[!is.na(data$Ken15.1),], stat = "identity") +
+  geom_line(data=d3[!is.na(data$Ken15.2),], stat = "identity") +
+  geom_bar(data = d1, stat = "identity") +
+  
+  geom_rect( data = d4, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d5, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d6, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_segment(data = d7, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d7.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d8, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d8.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d9, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d9.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d10, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d10.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d10.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d11.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d12, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d12.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d12.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d13, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d13.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d13.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d14, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d14.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d14.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+
+
+
+
+p1  
+##empty rect
+d7 <- data.frame(x = 24, y = 62,
+                 x2 = 0, y2 = 18)
+  geom_rect( data = d7, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = x2 ,
+                            ymax = y2),
+             linetype = 2,
+             color = "black",
+             alpha = 0 ) +
+##vertical line
+geom_vline( data = d7, aes(xintercept = x), linetype = 2)
+
+
+
+  ###Man 15###
+d1 <- data.frame(x=data$Days, y=data$Man15)  #data
+d2 <- data.frame(x=data$Days, y=data$Man15.1)
+d3 <- data.frame(x=data$Days, y=data$Man15.2)
+
+d4 <- data.frame(x = 61, y = 73, panel = "a")  #rectangles
+d5 <- data.frame(x = 80, y = 92, panel = "a")
+d6 <- data.frame(x = 105, y = 113, panel = "a")
+
+d1$panel <- "b"
+d2$panel <- "a"
+d3$panel <- "a"
+
+d <- rbind(d1, d2, d3)
+
+d7 <- data.frame(x = 33, x2 = 60, y = 18, y2 = 18, panel = "b")  #lines
+d7.1 <- data.frame(x = 33, x2 = 33, y = 0, y2 = 18, panel = "b")
+d7.2 <- data.frame(x = 60, x2 = 60, y = 18, y2 = Inf, panel = "b")
+d7.3 <- data.frame(x = 60, x2 = 60, y = -Inf, y2 = 10, panel = "a")
+d8 <- data.frame(x = 56, x2 = 80, y = 16, y2 = 16, panel = "b")
+d8.1 <- data.frame(x = 56, x2 = 56, y = 0, y2 = 16, panel = "b")
+d8.2 <- data.frame(x = 80, x2 = 80, y = 16, y2 = Inf, panel = "b")
+d8.3 <- data.frame(x = 80, x2 = 80, y = -Inf, y2 = 10, panel = "a")
+d9 <- data.frame(x = 89, x2 = 108, y = 12, y2 = 12, panel = "b")
+d9.1 <- data.frame(x = 89, x2 = 89, y = 0, y2 = 12, panel = "b")
+d9.2 <- data.frame(x = 108, x2 = 108, y = 12, y2 = Inf, panel = "b")
+d9.3 <- data.frame(x = 108, x2 = 108, y = -Inf, y2 = 10, panel = "a")
+
+d10 <- data.frame(x = 43, x2 = 68, y = 17, y2 = 17, panel = "b") #other peaks
+d10.1 <- data.frame(x = 43, x2 = 43, y = 0, y2 = 17, panel = "b")
+d10.2 <- data.frame(x = 68, x2 = 68, y = 17, y2 = Inf, panel = "b")
+d11 <- data.frame(x = 64, x2 = 86, y = 15, y2 = 15, panel = "b")
+d11.1 <- data.frame(x = 64, x2 = 64, y = 0, y2 = 15, panel = "b")
+d11.2 <- data.frame(x = 86, x2 = 86, y = 15, y2 = Inf, panel = "b")
+d12 <- data.frame(x = 75, x2 = 96, y = 14, y2 = 14, panel = "b")
+d12.1 <- data.frame(x = 75, x2 = 75, y = 0, y2 = 14, panel = "b")
+d12.2 <- data.frame(x = 96, x2 = 96, y = 14, y2 = Inf, panel = "b")
+d13 <- data.frame(x = 79, x2 = 99, y = 13, y2 = 13, panel = "b")
+d13.1 <- data.frame(x = 79, x2 = 79, y = 0, y2 = 13, panel = "b")
+d13.2 <- data.frame(x = 99, x2 = 99, y = 13, y2 = Inf, panel = "b")
+
+
+p2 <- ggplot(data = d, mapping = aes(x = x, y = y)) + 
+  facet_grid(panel~., scale="free") + 
+  geom_line(data=d2[!is.na(data$Man15.1),], stat = "identity") +
+  geom_line(data=d3[!is.na(data$Man15.2),], stat = "identity") +
+  geom_bar(data = d1, stat = "identity") +
+  geom_rect( data = d4, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d5, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d6, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_segment(data = d7, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d7.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d8, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d8.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d9, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d9.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d10, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d10.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d10.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d11.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d12, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d12.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d12.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d13, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d13.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d13.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+p2  
+
+
+##Ken16
+d1 <- data.frame(x=data$Days, y=data$Ken16)  #data
+d2 <- data.frame(x=data$Days, y=data$Ken16.1)
+d3 <- data.frame(x=data$Days, y=data$Ken16.2)
+d1$panel <- "b"
+d2$panel <- "a"
+d3$panel <- "a"
+d <- rbind(d1, d2, d3)
+
+d4 <- data.frame(x = 65, y = 75, panel = "a")  #rectangles
+d5 <- data.frame(x = 78, y = 85, panel = "a")
+d6 <- data.frame(x = 90, y = 95, panel = "a")
+
+d7 <- data.frame(x = 33, x2 = 63, y = 25, y2 = 25, panel = "b")  #lines
+d7.1 <- data.frame(x = 33, x2 = 33, y = 0, y2 = 25, panel = "b")
+d7.2 <- data.frame(x = 63, x2 = 63, y = 25, y2 = Inf, panel = "b")
+d7.3 <- data.frame(x = 63, x2 = 63, y = -Inf, y2 = 5, panel = "a")
+d8 <- data.frame(x = 53, x2 = 76, y = 23, y2 = 23, panel = "b")
+d8.1 <- data.frame(x = 53, x2 = 53, y = 0, y2 = 23, panel = "b")
+d8.2 <- data.frame(x = 76, x2 = 76, y = 23, y2 = Inf, panel = "b")
+d8.3 <- data.frame(x = 76, x2 = 76, y = -Inf, y2 = 5, panel = "a")
+d9 <- data.frame(x = 70, x2 = 90, y = 22, y2 = 22, panel = "b")
+d9.1 <- data.frame(x = 70, x2 = 70, y = 0, y2 = 22, panel = "b")
+d9.2 <- data.frame(x = 90, x2 = 90, y = 22, y2 = Inf, panel = "b")
+d9.3 <- data.frame(x = 90, x2 = 90, y = -Inf, y2 = 5, panel = "a")
+
+d10 <- data.frame(x = 46, x2 = 72, y = 24, y2 = 24, panel = "b") #other peaks
+d10.1 <- data.frame(x = 46, x2 = 46, y = 0, y2 = 24, panel = "b")
+d10.2 <- data.frame(x = 72, x2 = 72, y = 24, y2 = Inf, panel = "b")
+
+
+
+d4$panel <- "a"
+d5$panel <- "a"
+d6$panel <- "a"
+
+
+
+p1 <- ggplot(data = d, mapping = aes(x = x, y = y)) + 
+  facet_grid(panel~.) + 
+  ylim(0,27) +
+  geom_line(data=d2[!is.na(data$Ken16.1),], stat = "identity") +
+  geom_line(data=d3[!is.na(data$Ken16.2),], stat = "identity") +
+  geom_bar(data = d1, stat = "identity") +
+  geom_rect( data = d4, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d5, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d6, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_segment(data = d7, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d7.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d8, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d8.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d9, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d9.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d10, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d10.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d10.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+p1
+
+
+  ###Man 16###
+d1 <- data.frame(x=data$Days, y=data$Man16)  #data
+d2 <- data.frame(x=data$Days, y=data$Man16.1)
+d3 <- data.frame(x=data$Days, y=data$Man16.2)
+
+d1$panel <- "b"
+d2$panel <- "a"
+d3$panel <- "a"
+
+d <- rbind(d1, d2, d3)
+d4 <- data.frame(x = 65, y = 74, panel = "a")  #rectangles
+d5 <- data.frame(x = 82, y = 90, panel = "a")
+
+d7 <- data.frame(x = 34, x2 = 66, y = 30, y2 = 30, panel = "b")  #lines
+d7.1 <- data.frame(x = 34, x2 = 34, y = 0, y2 = 30, panel = "b")
+d7.2 <- data.frame(x = 66, x2 = 66, y = 30, y2 = Inf, panel = "b")
+d7.3 <- data.frame(x = 66, x2 = 66, y = -Inf, y2 = 20, panel = "a")
+d8 <- data.frame(x = 63, x2 = 83, y = 28, y2 = 28, panel = "b")
+d8.1 <- data.frame(x = 63, x2 = 63, y = 0, y2 = 28, panel = "b")
+d8.2 <- data.frame(x = 83, x2 = 83, y = 28, y2 = Inf, panel = "b")
+d8.3 <- data.frame(x = 83, x2 = 83, y = -Inf, y2 = 20, panel = "a")
+
+d10 <- data.frame(x = 53, x2 = 77, y = 29, y2 = 29, panel = "b") #other peaks
+d10.1 <- data.frame(x = 53, x2 = 53, y = 0, y2 = 29, panel = "b")
+d10.2 <- data.frame(x = 77, x2 = 77, y = 29, y2 = Inf, panel = "b")
+
+
+
+p2 <- ggplot(data = d, mapping = aes(x = x, y = y)) + 
+  facet_grid(panel~., scale="free") + 
+  geom_line(data=d2[!is.na(data$Man16.1),], stat = "identity") +
+  geom_line(data=d3[!is.na(data$Man16.2),], stat = "identity") +
+  geom_bar(data = d1, stat = "identity") +
+  geom_rect( data = d4, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d5, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_segment(data = d7, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d7.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d8, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d8.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d10, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d10.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d10.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+
+p2  
+
+  ###Wilts 16###
+d1 <- data.frame(x=data$Days, y=data$Wilts16)  #data
+d2 <- data.frame(x=data$Days, y=data$Wilts16.1)
+d3 <- data.frame(x=data$Days, y=data$Wilts16.2)
+d1$panel <- "b"
+d2$panel <- "a"
+d3$panel <- "a"
+d <- rbind(d1, d2, d3)
+
+d4 <- data.frame(x = 68, y = 75, panel = "a")  #rectangles
+d5 <- data.frame(x = 78, y = 82, panel = "a")
+d6 <- data.frame(x = 90, y = 95, panel = "a")
+
+d7 <- data.frame(x = 34, x2 = 65, y = 26, y2 = 26, panel = "b")  #lines
+d7.1 <- data.frame(x = 34, x2 = 34, y = 0, y2 = 26, panel = "b")
+d7.2 <- data.frame(x = 65, x2 = 65, y = 26, y2 = Inf, panel = "b")
+d7.3 <- data.frame(x = 65, x2 = 65, y = -Inf, y2 = 20, panel = "a")
+d8 <- data.frame(x = 53, x2 = 77, y = 24, y2 = 24, panel = "b")
+d8.1 <- data.frame(x = 53, x2 = 53, y = 0, y2 = 24, panel = "b")
+d8.2 <- data.frame(x = 77, x2 = 77, y = 24, y2 = Inf, panel = "b")
+d8.3 <- data.frame(x = 77, x2 = 77, y = -Inf, y2 = 20, panel = "a")
+d9 <- data.frame(x = 69, x2 = 89, y = 22, y2 = 22, panel = "b")
+d9.1 <- data.frame(x = 69, x2 = 69, y = 0, y2 = 22, panel = "b")
+d9.2 <- data.frame(x = 89, x2 = 89, y = 22, y2 = Inf, panel = "b")
+d9.3 <- data.frame(x = 89, x2 = 89, y = -Inf, y2 = 20, panel = "a")
+
+d10 <- data.frame(x = 46, x2 = 73, y = 25, y2 = 25, panel = "b") #other peaks
+d10.1 <- data.frame(x = 46, x2 = 46, y = 0, y2 = 25, panel = "b")
+d10.2 <- data.frame(x = 73, x2 = 73, y = 25, y2 = Inf, panel = "b")
+d11 <- data.frame(x = 55, x2 = 80, y = 23, y2 = 23, panel = "b")
+d11.1 <- data.frame(x = 55, x2 = 55, y = 0, y2 = 23, panel = "b")
+d11.2 <- data.frame(x = 80, x2 = 80, y = 23, y2 = Inf, panel = "b")
+
+
+d4$panel <- "a"
+d5$panel <- "a"
+d6$panel <- "a"
+
+
+
+p1 <- ggplot(data = d, mapping = aes(x = x, y = y)) + 
+  facet_grid(panel~., scale = "free") + 
+  geom_line(data=d2[!is.na(data$Wilts16.1),], stat = "identity") +
+  geom_line(data=d3[!is.na(data$Wilts16.2),], stat = "identity") +
+  geom_bar(data = d1, stat = "identity") +
+  geom_rect( data = d4, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d5, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_rect( data = d6, 
+             mapping = aes( xmin = x, 
+                            xmax = y ,
+                            ymin = -Inf ,
+                            ymax = Inf),
+             fill = "#FF4407" ,
+             alpha = .4 ) +
+  geom_segment(data = d7, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d7.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d7.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d8, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d8.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d8.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d9, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2)+
+  geom_segment(data = d9.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1) +
+  geom_segment(data = d9.3, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  geom_segment(data = d10, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d10.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d10.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  geom_segment(data = d11.1, aes(x = x, y = y, xend = x2, yend = y2), linetype = 2, colour="grey") +
+  geom_segment(data = d11.2, aes(x = x, y = y, xend = x2, yend = y2), linetype = 1, colour="grey") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+p1
+
+
