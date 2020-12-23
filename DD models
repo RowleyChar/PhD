@@ -1,0 +1,115 @@
+#MODEL1
+#Model 1
+model2data<-read.csv(file.choose(),header=TRUE) 	#Cumulative catch & DD fields combined.csv
+names(model2data)
+
+y2<-model2data$Catch
+x2<-model2data$DD10deg
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+
+nls(y2~100*(1-exp(-(x2/a)^b)),start = list(a = 300, b = 1))	#getting parameters of model
+
+model2<-nls(y2~100*(1-exp(-(x2/a)^b)),start = list(a = 300, b = 1))
+plot(x2,y2,col=Field)
+lines(x2, predict(model2, list(x2=x2)), col = "blue")	 #graph
+legend(800,20,unique(Field),col=1:length(Field),pch=1)
+
+RSS.p <- sum(residuals(model2)^2)  #residual sum of squares
+TSS <- sum((y2 - mean(y2))^2)	#total sum of squares
+1 - (RSS.p/TSS)	#r-squared measure
+
+
+## Regression of probit % catch and log DD
+
+y<-model2data$Probit
+x<-model2data$LogDD10deg
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+mod.1 <- lm(y~x)
+summary(mod.1)
+
+plot(x,y,col=Field)
+abline(-18.4105,8.5188, col="blue")
+
+z <- predict(mod.1, list(x=x), type="response")
+z <- pnorm(z, 5, 1)*100
+plot(x2,y2,col=Field, xlim = c(200, 1400))
+lines(x2, z, col = "blue")
+
+
+10^((3.11+18.4105)/8.5188)
+
+##Gompertz
+
+y<-model2data$Catch
+x<-model2data$DD
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+
+install.packages("minpack.lm")
+library(minpack.lm)
+
+model1<-nlsLM(y~a*exp(-b*exp((-c*(x)))), start = list(a=100, b=2, c=0.007))
+summary(model1)
+plot(x,y,col=Field, xlim = c(250, 1600))
+lines(x, predict(model1, list(x=x)), col = "blue")
+
+RSS.p <- sum(residuals(model1)^2)  #residual sum of squares
+TSS <- sum((y - mean(y))^2)	#total sum of squares
+1 - (RSS.p/TSS)	#r-squared measure
+
+
+##Binomial GLM
+
+y<-model2data$Catch
+x<-model2data$DD
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+y2 <- y/100
+
+mod1 <- glm(y2 ~ x, family = quasibinomial(link = logit))
+summary(mod1)
+
+plot(x,y2,col=Field, xlim = c(250, 1600))
+lines(x, predict(mod1, list(x=x), type='response'), col = "blue")
+
+1-(3.58/39.94)  ##Pseudo R-squared
+
+
+
+## Probit & Gompertz
+
+y<-model2data$Probit
+x<-model2data$LogDD10deg
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+mod.1 <- lm(y~x)
+summary(mod.1)
+
+y2<-model2data$Catch
+x2<-model2data$DD10deg
+Field<-model2data$Site
+Field<-as.factor(Field)
+
+install.packages("minpack.lm")
+library(minpack.lm)
+
+mod.2<-nlsLM(y2~a*exp(-b*exp((-c*(x2)))), start = list(a=100, b=2, c=0.007))
+summary(mod.2)
+plot(x,y,col=Field, xlim = c(200, 1400))
+
+x3 <- sort(x, decreasing = FALSE)
+x4 <- sort(x2, decreasing = FALSE)
+z <- predict(mod.1, list(x=x), type="response")
+z <- pnorm(z, 5, 1)*100
+x.1 <- 10^(x)
+plot(x2,y2,col=Field, xlim = c(200, 1400))
+lines(x.1, z, col = "blue")
+lines(x2, predict(mod.2, list(x=x2)), col = "red")
+
