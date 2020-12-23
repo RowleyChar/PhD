@@ -113,3 +113,4 @@ plot(x2,y2,col=Field, xlim = c(200, 1400))
 lines(x.1, z, col = "blue")
 lines(x2, predict(mod.2, list(x=x2)), col = "red")
 
+
